@@ -45,7 +45,7 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'master') {
-                    emailext subject: 'Build Success: front-pfa',
+                    emailext subject: 'Build Success: back-pfa',
                               body: 'The pipeline successfully built and deployed to Docker Hub.',
                               recipientProviders: [developers()],
                               to: 'semiayachi.contact@gmail.com'
@@ -53,7 +53,7 @@ pipeline {
             }
         }
         failure {
-            emailext subject: 'Build Failure: front-pfa',
+            emailext subject: 'Build Failure: back-pfa',
                       body: 'The pipeline failed to build. Please check the Jenkins console output for more details.',
                       recipientProviders: [developers()],
                       to: 'semiayachi.contact@gmail.com'
