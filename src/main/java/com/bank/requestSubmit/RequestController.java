@@ -5,8 +5,10 @@ import com.bank.bank.BankRepo;
 import com.bank.bank.IBankService;
 import com.bank.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -71,6 +73,23 @@ public class RequestController {
         }
 
     }
+    @GetMapping("allP")
+    public String listeFilms(Model model) {
+        model.addAttribute("requests",irs.findAllRequest());
+        return getPage(1, model, "firstName","asc");
+    }
+    @GetMapping("page/{pageNum}")
+    public String getPage(@PathVariable int pageNum, Model model, @RequestParam String sortField, @RequestParam String sortDir) {
+        int pageSize = 3;
+        Page<RequestSubmit> page = irs.findAllPaginatedRequest(pageNum, pageSize, sortField, sortDir);
+        model.addAttribute("requests", page.getContent());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("reverseDir", sortDir.equals("asc") ? "desc" : "asc");
 
+        return "affiche";
+    }
 
 }

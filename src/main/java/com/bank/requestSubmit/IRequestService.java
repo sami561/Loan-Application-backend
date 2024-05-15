@@ -1,5 +1,7 @@
 package com.bank.requestSubmit;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface IRequestService {
@@ -8,4 +10,6 @@ public interface IRequestService {
      public RequestSubmit  findRequestById(int id);
      public void DeleteRequest(int id);
      public RequestSubmit UpdateRequest(RequestSubmit r);
+     public Page<RequestSubmit> findAllPaginatedRequest(int pageNum, int pageSize, String sortField, String sortDir);
+
 }
