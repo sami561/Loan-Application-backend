@@ -73,23 +73,13 @@ public class RequestController {
         }
 
     }
-    @GetMapping("allP")
-    public String listeFilms(Model model) {
-        model.addAttribute("requests",irs.findAllRequest());
-        return getPage(1, model, "firstName","asc");
-    }
-    @GetMapping("page/{pageNum}")
-    public String getPage(@PathVariable int pageNum, Model model, @RequestParam String sortField, @RequestParam String sortDir) {
-        int pageSize = 3;
-        Page<RequestSubmit> page = irs.findAllPaginatedRequest(pageNum, pageSize, sortField, sortDir);
-        model.addAttribute("requests", page.getContent());
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("currentPage", pageNum);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("reverseDir", sortDir.equals("asc") ? "desc" : "asc");
-
-        return "affiche";
+    @GetMapping("/allP")
+    public Page<RequestSubmit> getPaginatedRequests(
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "sortField", defaultValue = "id") String sortField,
+            @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir) {
+        return irs.findAllPaginatedRequest(pageNum, pageSize, sortField, sortDir);
     }
 
 }
