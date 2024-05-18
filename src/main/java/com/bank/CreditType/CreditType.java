@@ -1,9 +1,8 @@
-package com.bank.requestSubmit;
+package com.bank.CreditType;
 
-import com.bank.CreditType.CreditType;
-import com.bank.bank.Bank;
-import com.bank.user.User;
+import com.bank.requestSubmit.RequestSubmit;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,19 +22,15 @@ import lombok.experimental.SuperBuilder;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class RequestSubmit {
+public class CreditType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    String Status;
-    String File;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bank_id")
-    private Bank bank;
-
+    String name;
+    String interestRate;
+    Double maxAmount;
+    Double minAmount;
+    String description;
 
 
 
