@@ -25,6 +25,7 @@ public class RequestSubmit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String Status;
+    String File;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;

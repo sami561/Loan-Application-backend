@@ -1,6 +1,8 @@
 package com.bank.requestSubmit;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,5 +13,6 @@ public interface IRequestService {
      public void DeleteRequest(int id);
      public RequestSubmit UpdateRequest(RequestSubmit r);
      public Page<RequestSubmit> findAllPaginatedRequest(int pageNum, int pageSize, String sortField, String sortDir);
+     public void uploadQuotePicture(MultipartFile file, Authentication connectedUser, Integer RequestId);
 
 }

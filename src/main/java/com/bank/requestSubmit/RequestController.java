@@ -4,12 +4,15 @@ import com.bank.bank.Bank;
 import com.bank.bank.BankRepo;
 import com.bank.bank.IBankService;
 import com.bank.user.UserRepository;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +83,16 @@ public class RequestController {
             @RequestParam(value = "sortField", defaultValue = "id") String sortField,
             @RequestParam(value = "sortDir", defaultValue = "asc") String sortDir) {
         return irs.findAllPaginatedRequest(pageNum, pageSize, sortField, sortDir);
+    }
+    @PostMapping(value = "/file/{request-id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadRequestFile(
+            @PathVariable("request-id") Integer requestId,
+            @Parameter()
+            @RequestPart("file") MultipartFile file,
+            Authentication connectedUser
+    ) {
+        irs.uploadQuotePicture(file, connectedUser, requestId);
+        return ResponseEntity.accepted().build();
     }
 
 }
