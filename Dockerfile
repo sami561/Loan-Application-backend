@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 # Runtime stage
 FROM amazoncorretto:17
 ARG PROFILE=dev
-ARG APP_VERSION=0.0.1
+ARG APP_VERSION=3.2.2
 
 WORKDIR /app 
 COPY --from=build /build/target/backend-pfa-${APP_VERSION}-SNAPSHOT.jar /app/backend-pfa-${APP_VERSION}-SNAPSHOT.jar
