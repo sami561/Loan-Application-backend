@@ -58,5 +58,5 @@ This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE
 
 ## Contributors
 
-- [Your Name](https://github.com/sami561)
-- [Contributor Name](https://github.com/contributor-username)
+- [Sami Ayachi](https://github.com/sami561)
+- [Credit Application Platform backend ](https://github.com/sami561/pfa-backend.git)
