@@ -2,45 +2,56 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dh_cred')
+        IMAGE_NAME = "${DOCKERHUB_CREDENTIALS_USR}/back-pfa"
     }
     triggers {
         pollSCM('*/5 * * * *') // Check every 5 minutes
     }
-
     stages {
         stage('Checkout') {
-            agent any
             steps {
                 echo "Getting source code"
                 checkout scm
             }
         }
-        stage('Init'){
-            steps{
-            // Permet l'authentification
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        stage('Docker Auth') {
+            steps {
+                script {
+                    sh '''
+                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                    '''
+                }
             }
         }
-        stage('Build'){
+        stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKERHUB_CREDENTIALS_USR/back-pfa  .'
+                script {
+                    sh '''
+                    docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} .
+                    '''
+                }
             }
         }
-        
-        stage('Deliver'){
+        stage('Push Docker Image') {
             steps {
-                sh 'docker push $DOCKERHUB_CREDENTIALS_USR/back-pfa'
+                script {
+                    sh '''
+                    docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    '''
+                }
             }
         }
-
-        stage('Cleanup') {
+        stage('Cleanup Docker Images') {
             steps {
-                sh 'docker rmi $DOCKERHUB_CREDENTIALS_USR/back-pfa'
-                sh 'docker logout'
+                script {
+                    sh '''
+                    docker rmi ${IMAGE_NAME}:${env.BUILD_NUMBER}
+                    docker logout
+                    '''
+                }
             }
         }
     }
-
     post {
         success {
             script {
