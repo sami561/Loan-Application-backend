@@ -8,7 +8,6 @@ pipeline {
         pollSCM('*/5 * * * *') // Check every 5 minutes
     }
     stages {
-        agent any
         stage('Checkout') {
             steps {
                 echo "Getting source code"
