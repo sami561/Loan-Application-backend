@@ -21,7 +21,7 @@ To set up the backend of the Credit Application Platform, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/credit-application-platform.git
+   git clone https://github.com/sami561/pfa-backend.git
    ```
 
 2. Navigate to the credit-application-platform directory:
