@@ -8,6 +8,7 @@ pipeline {
         pollSCM('*/5 * * * *') // Check every 5 minutes
     }
     stages {
+        agent any
         stage('Checkout') {
             steps {
                 echo "Getting source code"
@@ -26,48 +27,30 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh '''
+                    sh """
                     docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} .
-                    '''
+                    """
                 }
             }
         }
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh '''
+                    sh """
                     docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}
-                    '''
+                    """
                 }
             }
         }
         stage('Cleanup Docker Images') {
             steps {
                 script {
-                    sh '''
+                    sh """
                     docker rmi ${IMAGE_NAME}:${env.BUILD_NUMBER}
                     docker logout
-                    '''
+                    """
                 }
             }
         }
     }
-    post {
-        success {
-            script {
-                if (env.BRANCH_NAME == 'master') {
-                    emailext subject: 'Build Success: back-pfa',
-                              body: 'The pipeline successfully built and deployed to Docker Hub.',
-                              recipientProviders: [developers()],
-                              to: 'semiayachi.contact@gmail.com'
-                }
-            }
-        }
-        failure {
-            emailext subject: 'Build Failure: back-pfa',
-                      body: 'The pipeline failed to build. Please check the Jenkins console output for more details.',
-                      recipientProviders: [developers()],
-                      to: 'semiayachi.contact@gmail.com'
-        }
-    }
-}
+    post
