@@ -31,7 +31,9 @@ public class CreditType {
     Double maxAmount;
     Double minAmount;
     String description;
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "creditType")
+    private List<RequestSubmit> request;
 
 
 }

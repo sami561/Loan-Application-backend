@@ -33,7 +33,9 @@ public class RequestSubmit {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_id")
     private Bank bank;
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "CreditType_id")
+    private CreditType creditType;
 
 
 

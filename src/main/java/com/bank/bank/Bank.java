@@ -1,6 +1,5 @@
 package com.bank.bank;
 
-import com.bank.book.Book;
 import com.bank.gouvernorat.Gouvernorat;
 import com.bank.requestSubmit.RequestSubmit;
 import com.bank.user.User;

@@ -1,9 +1,7 @@
 package com.bank.user;
 
 import com.bank.bank.Bank;
-import com.bank.book.Book;
 import com.bank.gouvernorat.Gouvernorat;
-import com.bank.history.BookTransactionHistory;
 import com.bank.requestSubmit.RequestSubmit;
 import com.bank.role.Role;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -58,12 +56,6 @@ public class User implements UserDetails, Principal {
     private boolean enabled;
     @ManyToMany(fetch = EAGER)
     private List<Role> roles;
-    @JsonIgnore
-    @OneToMany(mappedBy = "owner")
-    private List<Book> books;
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<BookTransactionHistory> histories;
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Bank> banks;
