@@ -13,12 +13,12 @@ public class CreditTypeController {
     @Autowired
     private CreditTypeService creditTypeService;
 
-    @PostMapping
+    @PostMapping("/add")
     public CreditType createCreditType(@RequestBody CreditType creditType) {
         return creditTypeService.CreateCreditType(creditType);
     }
 
-    @GetMapping
+    @GetMapping("/getall")
     public List<CreditType> getAllCreditTypes() {
         return creditTypeService.findAllCreditType();
     }

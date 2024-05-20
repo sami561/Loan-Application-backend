@@ -1,5 +1,6 @@
 package com.bank.requestSubmit;
 
+import com.bank.CreditType.CreditTypeRepo;
 import com.bank.bank.Bank;
 import com.bank.bank.BankRepo;
 import com.bank.bank.IBankService;
@@ -29,10 +30,13 @@ public class RequestController {
     BankRepo br;
     @Autowired
     UserRepository ur;
+    @Autowired
+    CreditTypeRepo cr;
     @PostMapping("/add")
-    public ResponseEntity<RequestSubmit> addRequest(@RequestBody RequestSubmit r, @RequestParam int userId, @RequestParam int bankId){
+    public ResponseEntity<RequestSubmit> addRequest(@RequestBody RequestSubmit r, @RequestParam int userId, @RequestParam int bankId,@RequestParam int CreditType_id){
           r.setBank(br.findById(bankId).orElseThrow());
         r.setUser(ur.findById(userId).orElseThrow());
+        r.setCreditType(cr.findById(CreditType_id).orElseThrow());
         if(r.getUser() !=null && r.getBank()!=null ){
             RequestSubmit req = irs.CreateRequest(r);
             return ResponseEntity.ok(req);

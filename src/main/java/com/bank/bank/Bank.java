@@ -29,7 +29,9 @@ public class Bank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String nom;
-    String file;
+    String contactEmail;
+    int contactPhone;
+    String image;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
