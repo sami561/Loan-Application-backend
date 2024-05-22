@@ -32,20 +32,21 @@ public class RequestController {
     UserRepository ur;
     @Autowired
     CreditTypeRepo cr;
+    @Autowired
+    RequestRepo rr;
     @PostMapping("/add")
-    public ResponseEntity<RequestSubmit> addRequest(@RequestBody RequestSubmit r, @RequestParam int userId, @RequestParam int bankId,@RequestParam int CreditType_id){
-          r.setBank(br.findById(bankId).orElseThrow());
-        r.setUser(ur.findById(userId).orElseThrow());
-        r.setCreditType(cr.findById(CreditType_id).orElseThrow());
-        if(r.getUser() !=null && r.getBank()!=null ){
-            RequestSubmit req = irs.CreateRequest(r);
+    public ResponseEntity<?> addRequest(@RequestBody RequestSubmit r) {
+        r.setBank(br.findById(r.getBankId()).orElseThrow());
+        r.setUser(ur.findById(r.getUserId()).orElseThrow());
+        r.setCreditType(cr.findById(r.getCreditTypeId()).orElseThrow());
+        if (r.getUser() != null && r.getBank() != null) {
+            RequestSubmit req = rr.save(r);
             return ResponseEntity.ok(req);
         } else {
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "User or Gouvernorat not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((RequestSubmit)errorResponse);
+            errorResponse.put("error", "User or Bank not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
-
     }
     @GetMapping("/all")
     public ResponseEntity<List<RequestSubmit>> findAll(){

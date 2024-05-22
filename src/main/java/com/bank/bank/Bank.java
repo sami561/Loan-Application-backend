@@ -30,7 +30,7 @@ public class Bank {
     int id;
     String nom;
     String contactEmail;
-    int contactPhone;
+    String contactPhone;
     String image;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
