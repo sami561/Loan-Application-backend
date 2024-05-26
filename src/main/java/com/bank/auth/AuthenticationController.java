@@ -30,6 +30,14 @@ public class AuthenticationController {
         service.register(request);
         return ResponseEntity.accepted().build();
     }
+    @PostMapping("/registerAdmin")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<?> registerAdmin(
+            @RequestBody @Valid RegistrationRequest request
+    ) throws MessagingException {
+        service.register(request);
+        return ResponseEntity.accepted().build();
+    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
