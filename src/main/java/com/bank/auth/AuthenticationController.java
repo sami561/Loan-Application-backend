@@ -51,6 +51,12 @@ public class AuthenticationController {
     ) throws MessagingException {
         service.activateAccount(token);
     }
+    @GetMapping("/activate-admin")
+    public void confirmAdmin(
+            @RequestParam int id
+    ) throws MessagingException {
+        service.activateAdmin(id);
+    }
 
 
 }

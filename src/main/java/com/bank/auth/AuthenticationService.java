@@ -90,6 +90,16 @@ public class AuthenticationService {
     }
 
     @Transactional
+    public void activateAdmin(int id) throws MessagingException {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setEnabled(true);
+        userRepository.save(user);
+
+    }
+
+
+    @Transactional
     public void activateAccount(String token) throws MessagingException {
         Token savedToken = tokenRepository.findByToken(token)
                 // todo exception has to be defined
