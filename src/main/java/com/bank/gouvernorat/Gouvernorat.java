@@ -31,6 +31,7 @@ public class Gouvernorat {
     @GeneratedValue
     Integer id;
     String nom;
+    String code ;
     @JsonIgnore
     @OneToMany(mappedBy = "gouvernorat")
     private List<Bank> banks;

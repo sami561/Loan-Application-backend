@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @SuperBuilder
@@ -27,6 +29,13 @@ public class RequestSubmit {
     int id;
     String Status;
     String File;
+    String rejectionReasen;
+    Double Devis;
+    Date RequestDate;
+    Date ApprovalDate;
+    Integer periode;
+
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
