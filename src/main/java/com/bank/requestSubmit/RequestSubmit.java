@@ -37,7 +37,7 @@ public class RequestSubmit {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "Agent_id")
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_id")

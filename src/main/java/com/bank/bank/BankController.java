@@ -31,10 +31,10 @@ public class BankController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Bank>addBank(@RequestBody Bank b,@RequestParam int userId,@RequestParam int gauvernoratId){
+    public ResponseEntity<Bank>addBank(@RequestBody Bank b,@RequestParam int gauvernoratId){
         b.setGouvernorat(igs.findGouvernoratById(gauvernoratId));
-        b.setUser(ur.findById(userId).orElseThrow());
-        if(b.getUser() !=null && b.getGouvernorat() !=null ){
+
+        if(b.getGouvernorat() !=null ){
         Bank br = ibs.createBank(b);
         return ResponseEntity.ok(br);
         } else {
@@ -47,16 +47,16 @@ public class BankController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Bank>updateBank(@RequestBody Bank b,@RequestParam int userId,@RequestParam int gauvernoratId){
+    public ResponseEntity<Bank>updateBank(@RequestBody Bank b,@RequestParam int gauvernoratId){
         b.setGouvernorat(igs.findGouvernoratById(gauvernoratId));
-        b.setUser(ur.findById(userId).orElseThrow());
-        if(b.getUser() !=null && b.getGouvernorat() !=null ){
+
+        if( b.getGouvernorat() !=null ){
             Bank br = ibs.updateBank(b);
             return ResponseEntity.ok(br);
         } else {
 
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "User or Gouvernorat not found");
+            errorResponse.put("error", " Gouvernorat not found");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((Bank) errorResponse);
         }
 

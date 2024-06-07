@@ -1,7 +1,6 @@
 package com.bank.user;
 
 import com.bank.bank.Bank;
-import com.bank.gouvernorat.Gouvernorat;
 import com.bank.requestSubmit.RequestSubmit;
 import com.bank.role.Role;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 
 import static jakarta.persistence.FetchType.EAGER;
 
-
 @Getter
 @Setter
 @SuperBuilder
@@ -44,7 +42,7 @@ import static jakarta.persistence.FetchType.EAGER;
 public class User implements UserDetails, Principal {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String firstname;
     private String lastname;
@@ -54,15 +52,17 @@ public class User implements UserDetails, Principal {
     private String password;
     private boolean accountLocked;
     private boolean enabled;
+
     @ManyToMany(fetch = EAGER)
     private List<Role> roles;
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Bank> banks;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<RequestSubmit> request;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bank_id", nullable = true)
+    private Bank bank;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

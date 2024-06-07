@@ -27,22 +27,20 @@ import java.util.List;
 public class Bank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String nom;
-    String contactEmail;
-    String contactPhone;
-    String image;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private int id;
+    private String nom;
+    private String contactEmail;
+    private String contactPhone;
+    private String image;
+
+    @OneToMany(mappedBy = "bank")
+    private List<User> agents;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "gouvernorat_id")
     private Gouvernorat gouvernorat;
+
     @JsonIgnore
     @OneToMany(mappedBy = "bank")
     private List<RequestSubmit> request;
-
-
-
 }
