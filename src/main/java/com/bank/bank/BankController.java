@@ -1,12 +1,15 @@
 package com.bank.bank;
 
+import com.bank.file.FileStorageService;
 import com.bank.gouvernorat.IGouvernoratService;
 import com.bank.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +24,8 @@ public class BankController {
     IGouvernoratService igs;
     @Autowired
     UserRepository ur;
+    @Autowired
+    private FileStorageService fileStorageService;
     @GetMapping("/find/{id}")
     public ResponseEntity<Bank> findBankById(@PathVariable("id") int id) {
         Bank bank = ibs.findBankById(id);
@@ -30,20 +35,26 @@ public class BankController {
         return ResponseEntity.ok(bank);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Bank>addBank(@RequestBody Bank b,@RequestParam int gauvernoratId){
+    @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> addBank(
+            @RequestPart("bank") Bank b,
+            @RequestPart("file") MultipartFile file,
+            @RequestParam("gauvernoratId") int gauvernoratId
+    ) {
         b.setGouvernorat(igs.findGouvernoratById(gauvernoratId));
 
-        if(b.getGouvernorat() !=null ){
-        Bank br = ibs.createBank(b);
-        return ResponseEntity.ok(br);
-        } else {
-            // Return JSON message indicating the error
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "User or Gouvernorat not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((Bank)errorResponse);
-        }
+        if (b.getGouvernorat() != null) {
 
+            String imagePath = fileStorageService.saveFile(file, b.getId(), null); // Assuming user ID is not required here
+            b.setImage(imagePath);
+
+            Bank br = ibs.createBank(b);
+            return ResponseEntity.ok(br);
+        } else {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Gouvernorat not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
     }
 
     @PutMapping("/update")
