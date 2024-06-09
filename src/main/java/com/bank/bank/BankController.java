@@ -57,21 +57,27 @@ public class BankController {
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Bank>updateBank(@RequestBody Bank b,@RequestParam int gauvernoratId){
+    @PutMapping(value = "/update", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updateBank(
+            @RequestPart("bank") Bank b,
+            @RequestPart("file") MultipartFile file,
+            @RequestParam("gauvernoratId") int gauvernoratId
+    ) {
         b.setGouvernorat(igs.findGouvernoratById(gauvernoratId));
 
-        if( b.getGouvernorat() !=null ){
+        if (b.getGouvernorat() != null) {
+            String imagePath = fileStorageService.saveFile(file, b.getId(), null); // Assuming user ID is not required here
+            b.setImage(imagePath);
+
             Bank br = ibs.updateBank(b);
             return ResponseEntity.ok(br);
         } else {
-
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", " Gouvernorat not found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body((Bank) errorResponse);
+            errorResponse.put("error", "Gouvernorat not found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
-
     }
+
 
 
     @DeleteMapping("/delete/{id}")
