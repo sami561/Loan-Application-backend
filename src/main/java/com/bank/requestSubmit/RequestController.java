@@ -4,11 +4,13 @@ import com.bank.CreditType.CreditTypeRepo;
 import com.bank.bank.Bank;
 import com.bank.bank.BankRepo;
 import com.bank.bank.IBankService;
+import com.bank.file.FileStorageService;
 import com.bank.user.UserRepository;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
@@ -34,12 +36,17 @@ public class RequestController {
     CreditTypeRepo cr;
     @Autowired
     RequestRepo rr;
-    @PostMapping("/add")
-    public ResponseEntity<?> addRequest(@RequestBody RequestSubmit r) {
+    @Autowired
+    private FileStorageService fileStorageService;
+    @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> addRequest(@RequestPart("request") RequestSubmit r, @RequestPart("file") MultipartFile file) {
         r.setBank(br.findById(r.getBankId()).orElseThrow());
         r.setUser(ur.findById(r.getUserId()).orElseThrow());
         r.setCreditType(cr.findById(r.getCreditTypeId()).orElseThrow());
         if (r.getUser() != null && r.getBank() != null) {
+            String imagePath = fileStorageService.saveFile(file, r.getId(), null); // Assuming user ID is not required here
+            r.setStatus("pending");
+            r.setFile(imagePath);
             RequestSubmit req = rr.save(r);
             return ResponseEntity.ok(req);
         } else {
@@ -48,6 +55,7 @@ public class RequestController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<RequestSubmit>> findAll(){
         return ResponseEntity.ok(irs.findAllRequest());
