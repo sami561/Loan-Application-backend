@@ -107,5 +107,31 @@ public class RequestController {
         irs.uploadQuotePicture(file, connectedUser, requestId);
         return ResponseEntity.accepted().build();
     }
+    @PutMapping("/approve/{id}")
+    public ResponseEntity<?> approveRequest(@PathVariable("id") int id) {
+        RequestSubmit request = irs.findRequestById(id);
+        if (request == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Request not found");
+        }
+        if (!"pending".equalsIgnoreCase(request.getStatus())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request status must be pending to approve");
+        }
+        request.setStatus("approved");
+        rr.save(request);
+        return ResponseEntity.ok("Request approved successfully");
+    }
 
+    @PutMapping("/decline/{id}")
+    public ResponseEntity<?> declineRequest(@PathVariable("id") int id) {
+        RequestSubmit request = irs.findRequestById(id);
+        if (request == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Request not found");
+        }
+        if (!"pending".equalsIgnoreCase(request.getStatus())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Request status must be pending to decline");
+        }
+        request.setStatus("declined");
+        rr.save(request);
+        return ResponseEntity.ok("Request declined successfully");
+    }
 }
