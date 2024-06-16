@@ -35,7 +35,15 @@ public class AuthenticationController {
     public ResponseEntity<?> registerAdmin(
             @RequestBody @Valid RegistrationRequest request
     ) throws MessagingException {
-        service.register(request);
+        service.registerAdmin(request);
+        return ResponseEntity.accepted().build();
+    }
+    @PostMapping("/registerManager")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<?> registerManager(
+            @RequestBody @Valid RegistrationRequest request
+    ) throws MessagingException {
+        service.registerManager(request);
         return ResponseEntity.accepted().build();
     }
 

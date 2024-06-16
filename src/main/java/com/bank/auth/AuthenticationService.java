@@ -55,7 +55,7 @@ public class AuthenticationService {
         sendValidationEmail(user);
     }
     public void registerAdmin(RegistrationRequest request) throws MessagingException {
-        var userRole = roleRepository.findByName("ADMIN")
+        var userRole = roleRepository.findByName("Admin")
                 // todo - better exception handling
                 .orElseThrow(() -> new IllegalStateException("ROLE ADMIN was not initiated"));
         var user = User.builder()
@@ -65,6 +65,22 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .accountLocked(false)
                 .enabled(false)
+                .roles(List.of(userRole))
+                .build();
+        userRepository.save(user);
+
+    }
+    public void registerManager(RegistrationRequest request) throws MessagingException {
+        var userRole = roleRepository.findByName("Manager")
+                // todo - better exception handling
+                .orElseThrow(() -> new IllegalStateException("ROLE Manager was not initiated"));
+        var user = User.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .accountLocked(false)
+                .enabled(true)
                 .roles(List.of(userRole))
                 .build();
         userRepository.save(user);
