@@ -40,7 +40,7 @@ public class UserService {
         Map<String, Long> counts = new HashMap<>();
         counts.put("Client", userRepository.countUsersWithRoleUser());
         counts.put("Admin", userRepository.countUsersWithRoleAdmin());
-        counts.put("Manager", userRepository.countUsersWithRoleManager()) instanceof  ? (() counts.put("Manager", userRepository.countUsersWithRoleManager())) : null;;
+        counts.put("Manager", userRepository.countUsersWithRoleManager());
         return counts;
     }
 }
