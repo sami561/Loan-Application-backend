@@ -32,4 +32,11 @@ public class BankService implements IBankService {
     @Override
     public void deleteBank(int id) {
        br.deleteById(id);
-    } }
+    }
+
+    @Override
+    public long getBankCount() {
+        return br.count();
+    }
+}
+

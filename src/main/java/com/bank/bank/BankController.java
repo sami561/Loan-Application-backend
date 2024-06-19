@@ -91,4 +91,9 @@ public class BankController {
     public ResponseEntity<List<Bank>> findAll(){
         return ResponseEntity.ok(ibs.findAllBanks());
     }
+
+    @GetMapping("/count")
+    public long getBanksCount() {
+        return ibs.getBankCount();
+    }
 }

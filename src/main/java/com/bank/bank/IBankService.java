@@ -9,4 +9,5 @@ public interface IBankService  {
 
     public Bank updateBank(Bank a);
     public void deleteBank(int id);
+    public long getBankCount();
 }
