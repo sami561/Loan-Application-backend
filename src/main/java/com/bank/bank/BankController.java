@@ -26,6 +26,7 @@ public class BankController {
     UserRepository ur;
     @Autowired
     private FileStorageService fileStorageService;
+    //test
     @GetMapping("/find/{id}")
     public ResponseEntity<Bank> findBankById(@PathVariable("id") int id) {
         Bank bank = ibs.findBankById(id);
